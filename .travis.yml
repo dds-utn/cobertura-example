@@ -4,4 +4,10 @@ jdk:
 
 
 install: mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -Dcobertura.skip=true -B -V
+
+before_script: npm install -g xml-json
 script: mvn clean cobertura:check -B -V
+
+after_script:
+  - mvn cobertura:cobertura
+  - cat target/site/cobertura/coverage.xml | xml-json coverage | python -m json.tool
